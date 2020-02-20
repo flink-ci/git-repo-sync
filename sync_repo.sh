@@ -4,7 +4,7 @@
 # Configuration
 SOURCE_REPO=https://github.com/apache/flink.git
 TARGET_REPO=https://github.com/flink-ci/flink-mirror.git
-TARGET_BRANCHES="master release-1.10 release-1.9 release-1.8"
+TARGET_BRANCHES="master"
 
 echo "Syncing branches"
 # update last sync file
@@ -21,7 +21,12 @@ cd .repo
 echo "Fetching from SOURCE_REPO ($SOURCE_REPO)"
 git fetch
 
-echo "Pushing to TARGET_REPO ($TARGET_REPO)"
+for RELEASE_BRANCH in `git branch -a | grep "release-" | sort -V -r | head -n 3` ; do
+	TARGET_BRANCHES+=" $RELEASE_BRANCH"
+done
+
+echo "Pushing branches '$TARGET_BRANCHES' to TARGET_REPO ($TARGET_REPO)"
+
 # generating refspec
 REFSPEC=""
 for TARGET_BRANCH in $TARGET_BRANCHES ; do
