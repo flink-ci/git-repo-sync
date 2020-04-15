@@ -18,12 +18,15 @@ fi
 
 cd .repo
 
-echo "Fetching from SOURCE_REPO ($SOURCE_REPO)"
-git fetch
+# echo "Fetching from SOURCE_REPO ($SOURCE_REPO)"
+# git fetch origin master
 
 for RELEASE_BRANCH in `git branch -a | grep "release-" | sort -V -r | head -n 3` ; do
 	TARGET_BRANCHES+=" $RELEASE_BRANCH"
 done
+
+echo "Fetching branches '$TARGET_BRANCHES' from SOURCE_REPO ($SOURCE_REPO)"
+git fetch origin $TARGET_BRANCHES
 
 echo "Pushing branches '$TARGET_BRANCHES' to TARGET_REPO ($TARGET_REPO)"
 
