@@ -14,12 +14,12 @@ date > .last-sync
 if [ ! -d ".repo" ]; then
 	echo "SOURCE_REPO ($SOURCE_REPO) does not exist. Cloning ..."
 	git clone --mirror $SOURCE_REPO .repo
+        cd .repo
 else
 	# update list of current branches
+        cd .repo
 	git fetch origin 'refs/heads/release-*:refs/release-*'
 fi
-
-cd .repo
 
 # echo "Fetching from SOURCE_REPO ($SOURCE_REPO)"
 # git fetch origin master
