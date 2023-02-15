@@ -24,7 +24,8 @@ fi
 # echo "Fetching from SOURCE_REPO ($SOURCE_REPO)"
 # git fetch origin master
 
-for RELEASE_BRANCH in `git branch -a | grep "release-" | grep -v "rc" | sort -V -r | head -n 2` ; do
+# the 3 most-recent release branches need to be covered when a new release branch is cut but the release is not finalized, yet
+for RELEASE_BRANCH in `git branch -a | grep "release-" | grep -v "rc" | sort -V -r | head -n 3` ; do
 	TARGET_BRANCHES+=" $RELEASE_BRANCH"
 done
 
