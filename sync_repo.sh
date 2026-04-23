@@ -5,6 +5,9 @@
 SOURCE_REPO=https://github.com/apache/flink.git
 TARGET_REPO=https://github.com/flink-ci/flink-mirror.git
 TARGET_BRANCHES="master"
+# Long-term support (LTS) Flink release branches that must always be synced,
+# even if they fall outside the window of the 3 most-recent releases.
+LTS_RELEASE_BRANCHES="release-1.20"
 
 echo "Syncing branches"
 # update last sync file
@@ -27,6 +30,13 @@ fi
 # the 3 most-recent release branches need to be covered when a new release branch is cut but the release is not finalized, yet
 for RELEASE_BRANCH in `git branch -a | grep "release-" | grep -v "rc" | sort -V -r | head -n 3` ; do
 	TARGET_BRANCHES+=" $RELEASE_BRANCH"
+done
+
+# always include long-term support (LTS) release branches (skip if already selected above)
+for LTS_BRANCH in $LTS_RELEASE_BRANCHES ; do
+	if [[ " $TARGET_BRANCHES " != *" $LTS_BRANCH "* ]] ; then
+		TARGET_BRANCHES+=" $LTS_BRANCH"
+	fi
 done
 
 echo "Fetching branches '$TARGET_BRANCHES' from SOURCE_REPO ($SOURCE_REPO)"
